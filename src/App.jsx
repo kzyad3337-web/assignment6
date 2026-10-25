@@ -1,11 +1,18 @@
 
-import { useEffect, useReducer } from 'react'
+import { useEffect, useReducer, useState } from 'react'
+
 import './App.css'
 import { fetchPosts } from './api/postsApi'
 import { initialState, postsReducer } from './reducer/PostsReducer' 
 import PostList from './components/PostList'
+import FilterForm from './components/FilterForm'
 function App() {
+  const [searchTerm, setSearchTerm] = useState('')
   const [state, dispatch] = useReducer(postsReducer, initialState)
+
+const filteredPosts = state.posts.filter((post) =>
+  post.title.toLowerCase().includes(searchTerm.toLowerCase())
+)
 
   useEffect(() => {
     async function loadPosts() {
@@ -25,22 +32,30 @@ function App() {
     loadPosts()
   }, [])
 
-  return (
-    <main>
-      <h1>Post Dashboard</h1>
+return (
+  <main>
+    <h1>Post Dashboard</h1>
 
-      {state.loading && <p>Loading posts...</p>}
+    {state.loading && <p>Loading posts...</p>}
 
-      {state.error && <p role="alert">{state.error}</p>}
+    {state.error && <p role="alert">{state.error}</p>}
 
-      {!state.loading && !state.error && (
-  <>
-    <p>Posts loaded: {state.posts.length}</p>
-    <PostList posts={state.posts} />
-  </>
-)}
-    </main>
-  )
+    {!state.loading && !state.error && (
+      <>
+        <p>Posts loaded: {state.posts.length}</p>
+
+        <FilterForm
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+        />
+
+        <p>Matching posts: {filteredPosts.length}</p>
+
+        <PostList posts={filteredPosts} />
+      </>
+    )}
+  </main>
+)
 }
 
 export default App
