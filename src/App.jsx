@@ -57,9 +57,6 @@ return (
     ) : (
     <p>No posts found.</p>
    )}
-
-
-
       </>
     )}
   </main>
