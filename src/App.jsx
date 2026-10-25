@@ -3,7 +3,7 @@ import { useEffect, useReducer } from 'react'
 import './App.css'
 import { fetchPosts } from './api/postsApi'
 import { initialState, postsReducer } from './reducer/PostsReducer' 
-
+import PostList from './components/PostList'
 function App() {
   const [state, dispatch] = useReducer(postsReducer, initialState)
 
@@ -34,8 +34,11 @@ function App() {
       {state.error && <p role="alert">{state.error}</p>}
 
       {!state.loading && !state.error && (
-        <p>Posts loaded: {state.posts.length}</p>
-      )}
+  <>
+    <p>Posts loaded: {state.posts.length}</p>
+    <PostList posts={state.posts} />
+  </>
+)}
     </main>
   )
 }
