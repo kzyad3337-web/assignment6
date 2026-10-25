@@ -51,7 +51,15 @@ return (
 
         <p>Matching posts: {filteredPosts.length}</p>
 
-        <PostList posts={filteredPosts} />
+
+     {filteredPosts.length > 0 ? (
+      <PostList posts={filteredPosts} />
+    ) : (
+    <p>No posts found.</p>
+   )}
+
+
+
       </>
     )}
   </main>
